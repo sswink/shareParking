@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+    <title>停车场管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/select2.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/themes/flat-blue.css">
+</head>
+
+<body class="flat-blue">
+<div class="app-container expanded">
+    <div class="row content-container">
+        <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-expand-toggle">
+                        <i class="fa fa-bars icon"></i>
+                    </button>
+                    <ol class="breadcrumb navbar-breadcrumb">
+                        <li class="active">管理员主页</li>
+                    </ol>
+                    <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                        <i class="fa fa-th icon"></i>
+                    </button>
+                </div>
+
+                <div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown profile">
+                            <a id="tabName" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">你的用户名 <span class="caret"></span></a>
+                            <ul class="dropdown-menu animated fadeInDown">
+                                <li class="profile-img">
+                                    <img src="/resource/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                </li>
+                                <li>
+                                    <div class="profile-info">
+                                        <h4 class="username" id="tabAdminName">你的用户名</h4>
+                                        <div class="btn-group margin-bottom-2x"> <!-- role="group"-->
+                                            <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> 我的</button>-->
+                                            <button type="button" class="btn btn-default" onclick="delCookie()"><i class="fa fa-sign-out"></i> 退出</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="side-menu sidebar-inverse">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="side-menu-container">
+                    <div class="navbar-header">
+                        <div class="navbar-brand">
+                            <div class="icon fa fa-paper-plane"></div>
+                            <div class="title">欢迎使用本平台</div>
+                        </div>
+                        <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-times icon"></i>
+                        </button>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/toAdminParking">
+                                <span class="icon fa fa-tachometer"></span><span class="title">主页</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/toAdminUpdateMessage">
+                                <span class="icon fa fa-desktop"></span><span class="title">停车场信息</span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="/toAdminParkingOrders">
+                                <span class="icon fa fa-file-text-o"></span><span class="title">订单信息</span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="/toAdminParkingGenerates">
+                                <span class="icon fa fa-table"></span><span class="title">车位信息</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <div class="container-fluid">
+            <div class="side-body padding-top" style="margin:auto; width: 50%;padding-left: 15%">
+                <div class="row" >
+                    <div class="col-xs-12">
+                        <div class="panel panel-default" style="border:skyblue 1px solid;">
+                            <div class="panel-heading"  style="background-color:skyblue; text-align: center;">
+                                <div class="card-title">
+                                    <div class="title"><h4>修改停车场</h4></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>停车场名称</label>
+                                    <input type="text" name="parkingName" class="form-control" placeholder="Text input">
+                                </div>
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>详细地址</label>
+                                    <input type="text" name="parkingLocation" class="form-control" placeholder="Text input">
+                                </div>
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>备注</label>
+                                    <textarea name="remaker" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="form-group col-sm-offset-4 col-sm-8">
+                                    <button type="reset" class="btn btn-default">取消</button>
+                                    <button type="submit" class="btn btn-info col-sm-offset-2" id="updateSubmit1">提交</button>
+                                    <input type="text" name="parkingId" style="visibility: hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default" style="border:#FABE28 1px solid;">
+                            <div class="panel-heading"  style="background-color:#FABE28; text-align: center;">
+                                <div class="card-title">
+                                    <div class="title"><h4>修改管理员密码</h4></div>
+                                </div>
+                            </div>
+                            <div class="panel-body ">
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>管理员名称</label>
+                                    <input name="adminName" type="text" class="form-control" placeholder="text" disabled="true">
+                                </div>
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label >管理员原密码</label>
+                                    <input name="adminOldPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                </div>
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>管理员新密码</label>
+                                    <input name="adminNewPassword" type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
+                                </div>
+
+                                <div class="form-group col-sm-offset-1 col-sm-10">
+                                    <label>确认密码</label>
+                                    <input name="adminNewPassword2" type="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                                </div>
+                                <div class="form-group col-sm-offset-4 col-sm-8">
+                                    <button type="reset" class="btn btn-default">取消</button>
+                                    <button type="submit" class="btn col-sm-offset-2 btn-info" id="updateSubmit2">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<!-- Javascript Libs -->
+<script type="text/javascript" src="/resource/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/Chart.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/jquery.matchHeight-min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/select2.full.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/ace.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/mode-html.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/theme-github.js"></script>
+<!-- Javascript -->
+<script type="text/javascript" src="/resource/js/app.js"></script>
+<script type="text/javascript" src="/resource/js/index.js"></script>
+<script src="/resource/lib/js/jquery-2.2.4.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(function () {
+        var admin;
+        var parking;
+        $.ajax({
+            url:'/admin/getAdmin/'+getCookie("name"),
+            type:'get',
+            success:function (data) {
+                admin=data;
+                $("input[name='adminName']").val(admin.adminName);
+                if(admin.parkingId!=0){
+                    $.ajax({
+                        type:'get',
+                        url:'/parking/getParkingById/'+admin.parkingId,
+                        success:function (data) {
+                            parking=data;
+                            $("input[name='parkingName']").val(parking.parkingName);
+                            $("input[name='parkingLocation']").val(parking.parkingLocation);
+                            $("textarea[name='remaker']").val(parking.remaker);
+                            $("input[name='parkingId']").val(parking.parkingId);
+                        }
+                    })
+                }
+                else {
+                    alert("停车场管理员验证失败");
+                }
+            },
+            error:function (error) {
+                alert("发送请求失败");
+            }
+        });
+    })
+
+    $("input[name='adminNewPassword2']").blur(
+        function () {
+            if($("input[name='adminNewPassword']").val()==$("input[name='adminNewPassword2']").val()){
+                $("#updateSubmit2").removeAttr("disabled");
+            }
+            else {
+                $("#updateSubmit2").attr("disabled","true");
+            }
+        }
+    )
+
+    $("#updateSubmit1").click(function () {
+        $.ajax({
+            type:"post",
+            url:"/parking/updateParking",
+            data:{
+                parkingName:$("input[name='parkingName']").val(),
+                parkingLocation:$("input[name='parkingLocation']").val(),
+                remaker:$("textarea[name='remaker']").val(),
+                parkingId:$("input[name='parkingId']").val()
+            },
+            success:function (data) {
+                alert(data.error);
+            }
+        })
+    })
+
+    $("#updateSubmit2").click(function () {
+        $.ajax({
+            type:"post",
+            url:"/admin/updateAdmin/",
+            data:{
+                adminName:$("input[name='adminName']").val(),
+                adminOldPassword:$("input[name='adminOldPassword']").val(),
+                adminNewPassword:$("input[name='adminNewPassword']").val()
+            },
+            success:function (data) {
+                alert(data.error);
+            }
+        })
+    })
+
+</script>
+</html>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.front.dao.ParkingLotMapper" >
+  <resultMap id="BaseResultMap" type="com.front.entity.ParkingLot" >
+    <constructor >
+      <idArg column="parkinglot_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="parking_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="parkinglot_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    parkinglot_id, parking_id, parkinglot_num, user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from parkinglot
+    where parkinglot_id = #{parkinglotId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from parkinglot
+    where parkinglot_id = #{parkinglotId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.front.entity.ParkingLot" >
+    insert into parkinglot (parkinglot_id, parking_id, parkinglot_num, 
+      user_id)
+    values (#{parkinglotId,jdbcType=BIGINT}, #{parkingId,jdbcType=BIGINT}, #{parkinglotNum,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.front.entity.ParkingLot" >
+    insert into parkinglot
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parkinglotId != null" >
+        parkinglot_id,
+      </if>
+      <if test="parkingId != null" >
+        parking_id,
+      </if>
+      <if test="parkinglotNum != null" >
+        parkinglot_num,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parkinglotId != null" >
+        #{parkinglotId,jdbcType=BIGINT},
+      </if>
+      <if test="parkingId != null" >
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="parkinglotNum != null" >
+        #{parkinglotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.front.entity.ParkingLot" >
+    update parkinglot
+    <set >
+      <if test="parkingId != null" >
+        parking_id = #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="parkinglotNum != null" >
+        parkinglot_num = #{parkinglotNum,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where parkinglot_id = #{parkinglotId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.front.entity.ParkingLot" >
+    update parkinglot
+    set parking_id = #{parkingId,jdbcType=BIGINT},
+      parkinglot_num = #{parkinglotNum,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT}
+    where parkinglot_id = #{parkinglotId,jdbcType=BIGINT}
+  </update>
+
+  <!--鹏-->
+
+  <resultMap id="parkingLotMaps" type="com.front.dto.parkingLotById">
+    <id column="parkinglot_id" jdbcType="BIGINT" property="parkinglotId"/>
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId"/>
+    <result column="parkinglot_num" jdbcType="VARCHAR" property="parkinglotNum"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    <association property="users" resultMap="com.front.dao.UsersMapper.BaseResultMap"/>
+    <association property="parking" resultMap="com.front.dao.ParkingMapper.BaseResultMap"/>
+  </resultMap>
+
+  <select id="getParkinglotByPkId" resultMap="parkingLotMaps">
+    SELECT *
+    FROM
+    parkinglot pl
+    JOIN  users u ON u.user_id=pl.user_id
+    JOIN parking pk ON pk.parking_id=pl.parking_id
+    <where>
+      pl.parking_id=#{parkingId}
+    </where>
+  </select>
+
+  <select id="getAllParkinglot" resultMap="parkingLotMaps">
+    SELECT *
+    FROM
+    parkinglot pl
+    JOIN  users u ON u.user_id=pl.user_id
+    JOIN parking pk ON pk.parking_id=pl.parking_id
+  </select>
+
+  <!--前端-->
+  <insert id="insertParkingLot">
+    INSERT parkinglot ( parking_id,
+    parkinglot_num, user_id) VALUES (
+    #{parking_id},
+    #{plate_num},
+    #{user_id}
+    );
+  </insert>
+  <delete id="deleteParkingLotByParkingLotId">
+    DELETE FROM parkinglot WHERE parkinglot_id = #{parkinglot_id} ;
+  </delete>
+  <select id="queryByUser_Id" resultMap="parkingLotWithName">
+    SELECT 	pl.parkinglot_id,
+    pl.parking_id,
+    pl.parkinglot_num,
+    pl.user_id,p.parking_name
+
+    FROM parkinglot pl INNER JOIN parking p
+    ON pl.parking_id=p.parking_id
+    <where>user_id=#{user_id}</where>
+  </select>
+  <resultMap id="parkingLotWithName" type="com.front.dto.ParkingWithName">
+    <id column="parkinglot_id" jdbcType="BIGINT" property="parkinglotId"/>
+    <result column="parking_id" jdbcType="BIGINT" property="parkingId"/>
+    <result column="parkinglot_num" jdbcType="VARCHAR" property="parkinglotNum"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+  </resultMap>
+</mapper>

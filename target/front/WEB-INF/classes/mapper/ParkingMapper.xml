@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.front.dao.ParkingMapper" >
+  <resultMap id="BaseResultMap" type="com.front.entity.Parking" >
+    <constructor >
+      <idArg column="parking_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="parking_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="parking_location" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="longitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="latitude" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="remaker" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    parking_id, parking_name, parking_location, longitude, latitude, remaker
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from parking
+    where parking_id = #{parkingId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from parking
+    where parking_id = #{parkingId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.front.entity.Parking" >
+    insert into parking (parking_id, parking_name, parking_location, 
+      longitude, latitude, remaker
+      )
+    values (#{parkingId,jdbcType=BIGINT}, #{parkingName,jdbcType=VARCHAR}, #{parkingLocation,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, #{remaker,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.front.entity.Parking" >
+    insert into parking
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parkingId != null" >
+        parking_id,
+      </if>
+      <if test="parkingName != null" >
+        parking_name,
+      </if>
+      <if test="parkingLocation != null" >
+        parking_location,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="remaker != null" >
+        remaker,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parkingId != null" >
+        #{parkingId,jdbcType=BIGINT},
+      </if>
+      <if test="parkingName != null" >
+        #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingLocation != null" >
+        #{parkingLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="remaker != null" >
+        #{remaker,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.front.entity.Parking" >
+    update parking
+    <set >
+      <if test="parkingName != null" >
+        parking_name = #{parkingName,jdbcType=VARCHAR},
+      </if>
+      <if test="parkingLocation != null" >
+        parking_location = #{parkingLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="remaker != null" >
+        remaker = #{remaker,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where parking_id = #{parkingId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.front.entity.Parking" >
+    update parking
+    set parking_name = #{parkingName,jdbcType=VARCHAR},
+      parking_location = #{parkingLocation,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      remaker = #{remaker,jdbcType=VARCHAR}
+    where parking_id = #{parkingId,jdbcType=BIGINT}
+  </update>
+
+ <!--鹏-->
+  <resultMap id="parkingMaps" type="com.front.dto.ParkingOrders">
+    <id column="parking_id" jdbcType="BIGINT" property="parkingId"></id>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="parking_location" jdbcType="VARCHAR" property="parkingLocation"/>
+    <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
+    <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
+    <result column="remaker" jdbcType="VARCHAR" property="remaker"/>
+    <association property="generate" resultMap="com.front.dao.GenerateMapper.BaseResultMap" />
+    <association property="orders" resultMap="com.front.dao.OrderMapper.BaseResultMap" />
+    <association property="parkinglot" resultMap="com.front.dao.ParkingLotMapper.BaseResultMap"/>
+    <association property="users" resultMap="com.front.dao.UsersMapper.BaseResultMap"/>
+  </resultMap>
+  <update id="updataRemark">
+    UPDATE parking
+    SET
+    <if test="remaker != null" >
+      remaker = #{remaker}
+    </if>
+    WHERE
+    parking_id = #{parkingId}
+  </update>
+  <select id="getOrderById"  resultMap="parkingMaps">
+    SELECT *
+    FROM
+    parking JOIN parkinglot
+    ON parking.parking_id=parkinglot.parking_id
+    JOIN users
+    ON parkinglot.user_id=users.user_id
+    JOIN sharepl.order
+    ON order.user_id=users.user_id
+    JOIN generate
+    ON parkinglot.parkinglot_id=generate.parkinglot_id
+    WHERE
+    parking.parking_id=#{parkingId}
+  </select>
+  <select id="getParkingInfo" resultMap="BaseResultMap">
+    SELECT *
+    FROM
+    parking
+  </select>
+
+  <select id="getNewParkingId" resultType="java.lang.Long">
+    SELECT
+      MAX(parking_id)
+    FROM
+      parking
+  </select>
+
+  <!--前端-->
+  <select id="queryByplid" resultMap="queryByPlid">
+    SELECT p.parking_name,u.plate_num
+    FROM parking p INNER JOIN parkinglot pl
+    ON p.parking_id =pl.parking_id INNER JOIN users u
+    ON pl.user_id=u.user_id
+    WHERE pl.parkinglot_id=#{parkinglot_id}
+  </select>
+  <resultMap id="queryByPlid" type="com.front.dto.ParkingToShare">
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="plate_num" jdbcType="VARCHAR" property="plateNum"/>
+  </resultMap>
+  <select id="queryParkingInfo" resultMap="parkingWithGen">
+    SELECT p.parking_id,p.parking_name,p.parking_location,p.longitude,p.latitude,p.remaker,
+    g.generate_status,g.generate_id,g.parkinglot_id,g.generate_price,g.generate_share_begin,g.generate_share_end
+
+    FROM
+    parking p LEFT JOIN parkinglot pl
+    ON p.parking_id=pl.parking_id LEFT JOIN generate g
+    ON g.parkinglot_id=pl.parkinglot_id
+    <where>
+      p.parking_id=#{parking_id}
+    </where>
+  </select>
+  <select id="queryBycondition" resultMap="parkingMapBycondition">
+    SELECT p.parking_id,p.parking_name,p.parking_location,p.longitude,p.latitude,p.remaker,
+    g.generate_status
+
+    FROM
+    parking p LEFT JOIN parkinglot pl
+    ON p.parking_id=pl.parking_id LEFT JOIN generate g
+    ON g.parkinglot_id=pl.parkinglot_id
+    <where>
+      (#{nowlongitude}+0.03>=p.longitude AND p.longitude>=#{nowlongitude}-0.03)AND
+      (#{nowlatitude}+0.03>=p.latitude AND p.latitude>=#{nowlatitude}-0.03)
+    </where>
+  </select>
+  <resultMap id="parkingWithGen" type="com.front.dto.ParkingInfo">
+    <id column="parking_id" jdbcType="BIGINT" property="parkingId"></id>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="parking_location" jdbcType="VARCHAR" property="parkingLocation"/>
+    <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
+    <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
+    <result column="remaker" jdbcType="VARCHAR" property="remaker"/>
+    <collection property="generateList" resultMap="com.front.dao.GenerateMapper.BaseResultMap"/>
+  </resultMap>
+  <resultMap id="parkingMapBycondition" type="com.front.util.ParkingUtil">
+    <id column="parking_id" jdbcType="BIGINT" property="parkingId"></id>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="parking_location" jdbcType="VARCHAR" property="parkingLocation"/>
+    <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
+    <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
+    <result column="remaker" jdbcType="VARCHAR" property="remaker"/>
+    <result column="generate_status" jdbcType="CHAR" property="status"/>
+  </resultMap>
+  <select id="count" resultType="INTEGER">
+    select count(user_id) from parkinglot where parking_id=#{parkingId} and user_id=#{userId};
+  </select>
+</mapper>

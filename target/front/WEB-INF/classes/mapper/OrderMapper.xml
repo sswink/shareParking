@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.front.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.front.entity.Order" >
+    <constructor >
+      <idArg column="order_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="generate_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="order_parking_begin" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_parking_end" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_parking_totaltime" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="order_status" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="order_createtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, user_id, generate_id, order_parking_begin, order_parking_end, order_parking_totaltime, 
+    order_price, order_status, order_createtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from `order`
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.front.entity.Order" >
+    insert into `order` (order_id, user_id, generate_id,
+      order_parking_begin, order_parking_end, order_parking_totaltime, 
+      order_price, order_status, order_createtime
+      )
+    values (#{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{generateId,jdbcType=BIGINT}, 
+      #{orderParkingBegin,jdbcType=VARCHAR}, #{orderParkingEnd,jdbcType=VARCHAR}, #{orderParkingTotaltime,jdbcType=DECIMAL}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{orderStatus,jdbcType=CHAR}, #{orderCreatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.front.entity.Order" >
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="generateId != null" >
+        generate_id,
+      </if>
+      <if test="orderParkingBegin != null" >
+        order_parking_begin,
+      </if>
+      <if test="orderParkingEnd != null" >
+        order_parking_end,
+      </if>
+      <if test="orderParkingTotaltime != null" >
+        order_parking_totaltime,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderCreatetime != null" >
+        order_createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="generateId != null" >
+        #{generateId,jdbcType=BIGINT},
+      </if>
+      <if test="orderParkingBegin != null" >
+        #{orderParkingBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="orderParkingEnd != null" >
+        #{orderParkingEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="orderParkingTotaltime != null" >
+        #{orderParkingTotaltime,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderCreatetime != null" >
+        #{orderCreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.front.entity.Order" >
+    update `order`
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="generateId != null" >
+        generate_id = #{generateId,jdbcType=BIGINT},
+      </if>
+      <if test="orderParkingBegin != null" >
+        order_parking_begin = #{orderParkingBegin,jdbcType=VARCHAR},
+      </if>
+      <if test="orderParkingEnd != null" >
+        order_parking_end = #{orderParkingEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="orderParkingTotaltime != null" >
+        order_parking_totaltime = #{orderParkingTotaltime,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderCreatetime != null" >
+        order_createtime = #{orderCreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+
+
+  <resultMap id="OrderAllDetail" type="com.front.dto.OrderAllDetail">
+    <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="generate_id" jdbcType="BIGINT" property="generateId" />
+    <result column="order_parking_begin" jdbcType="VARCHAR" property="orderParkingBegin" />
+    <result column="order_parking_end" jdbcType="VARCHAR" property="orderParkingEnd" />
+    <result column="order_parking_totaltime" jdbcType="DECIMAL" property="orderParkingTotaltime" />
+    <result column="order_price" jdbcType="DECIMAL" property="orderPrice" />
+    <result column="order_status" jdbcType="CHAR" property="orderStatus" />
+    <result column="order_createtime" jdbcType="TIMESTAMP" property="orderCreatetime" />
+    <association property="users" resultMap="com.front.dao.UsersMapper.BaseResultMap"/>
+    <association property="generate" resultMap="com.front.dao.GenerateMapper.BaseResultMap"/>
+    <association property="parkingLot" resultMap="com.front.dao.ParkingLotMapper.BaseResultMap"/>
+    <association property="parking" resultMap="com.front.dao.ParkingMapper.BaseResultMap"/>
+  </resultMap>
+
+  <select id="getOrderAllDetail" resultMap="OrderAllDetail">
+    SELECT *
+    FROM `order` o
+    JOIN users u on u.user_id = o.user_id
+    JOIN generate g on g.generate_id = o.generate_id
+      JOIN parkinglot pl on pl.parkinglot_id = g.parkinglot_id
+      JOIN parking pk on pk.parking_id = pl.parking_id
+    <where>
+      <if test="orderId != -1" >
+        o.order_id=#{orderId}
+      </if>
+      <if test="parkingId != -1" >
+        and pk.parking_id=#{parkingId}
+      </if>
+      <if test="orderStatus == -2" >
+        and o.order_status=0
+        OR o.order_status=1
+      </if>
+      <if test="orderStatus != -1 and orderStatus != -2  " >
+        and o.order_status=#{orderStatus}
+      </if>
+    </where>
+  </select>
+
+  <update id="parkingTimeBegin">
+    update `order`
+    set
+      order_parking_begin=#{orderParkingBegin},
+      order_status = 1
+    WHERE order_id=#{orderId}
+  </update>
+
+  <select id="getGenerateIdByOrderId">
+    select generate_id from `order` where order_id=#{order_id};
+  </select>
+  <update id="parkingTimeEnd">
+    update `order`
+    set
+      order_parking_end=#{orderParkingEnd},
+      order_parking_totaltime=#{orderParkingTotaltime},
+      order_price = #{orderPrice},
+      order_status=2
+    WHERE order_id=#{orderId}
+  </update>
+
+  <!--前端-->
+  <select id="queryUseList" resultMap="parkingUse">
+    SELECT	u.user_id,o.order_parking_begin,o.order_parking_end,o.order_status,o.order_id,
+    g.generate_price,g.generate_share_begin,g.generate_share_end,
+    p.parking_name,u.plate_num
+    FROM parking p LEFT JOIN parkinglot pl
+    ON p.parking_id=pl.parking_id LEFT JOIN  users u
+    ON u.user_id=pl.user_id LEFT JOIN generate g
+    ON g.parkinglot_id=pl.parkinglot_id LEFT JOIN sharepl.order o
+    ON o.generate_id=g.generate_id
+
+    <where> o.user_id= #{user_id}</where>
+  </select>
+  <insert id="insertOrder" parameterType="com.front.dto.InsertOrder">
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="order_id">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO sharepl.order
+    (
+    user_id,
+    generate_id,
+    order_status
+    )
+    VALUES
+    (
+    #{user_id},
+    #{generate_id},
+    #{status}
+    );
+  </insert>
+  <select id="queryByOrderId" resultMap="parkingUseInfo">
+    SELECT 	u.lastlogin_time,u.phone_num,u.plate_num,u.regist_time,u.sex,u.user_id,u.user_name,u.wx_id,u.wx_name,
+    pl.parking_id,pl.parkinglot_id,pl.parkinglot_num,pl.user_id,
+    p.parking_id,p.parking_name,p.parking_location,p.longitude,p.latitude,p.remaker,
+    g.generate_id,g.generate_price,g.generate_share_begin,g.generate_share_end,g.parkinglot_id,g.generate_status,
+    o.generate_id,o.order_createtime,o.order_id,o.order_parking_begin,o.order_parking_end,o.order_parking_totaltime,o.order_price,o.order_status,o.user_id
+    FROM parking p LEFT JOIN parkinglot pl
+    ON p.parking_id=pl.parking_id LEFT JOIN  users u
+    ON u.user_id=pl.user_id LEFT JOIN generate g
+    ON g.parkinglot_id=pl.parkinglot_id LEFT JOIN sharepl.order o
+    ON o.generate_id=g.generate_id
+    <where>order_id=#{order_id}</where>
+  </select>
+  <delete id="deleteOrder">
+    DELETE FROM sharepl.order
+    WHERE
+    order_id = #{order_id} ;
+  </delete>
+  <resultMap id="parkingUse" type="com.front.dto.ParkingUse">
+    <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+    <result column="plate_num" jdbcType="VARCHAR" property="plateNum"/>
+    <result column="order_parking_begin" jdbcType="VARCHAR" property="orderParkingBegin"/>
+    <result column="order_parking_end" jdbcType="VARCHAR" property="orderParkingEnd"/>
+    <result column="generate_price" jdbcType="DECIMAL" property="price"/>
+    <result column="order_status" jdbcType="CHAR" property="orderStatus"/>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkName"/>
+    <result column="generate_share_begin" jdbcType="BIGINT" property="shareBegin"/>
+    <result column="generate_share_end" jdbcType="BIGINT" property="shareEnd"/>
+  </resultMap>
+  <resultMap id="parkingUseInfo" type="com.front.dto.five">
+    <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="generate_id" jdbcType="BIGINT" property="generateId"/>
+    <result column="order_parking_begin" jdbcType="VARCHAR" property="orderParkingBegin"/>
+    <result column="order_parking_end" jdbcType="VARCHAR" property="orderParkingEnd"/>
+    <result column="order_parking_totaltime" jdbcType="VARCHAR" property="orderParkingTotaltime"/>
+    <result column="order_price" jdbcType="DECIMAL" property="orderPrice"/>
+    <result column="order_status" jdbcType="CHAR" property="orderStatus"/>
+    <result column="order_createtime" jdbcType="TIMESTAMP" property="orderCreatetime"/>
+    <association property="generate" resultMap="com.front.dao.GenerateMapper.BaseResultMap" />
+    <association property="parkinglot" resultMap="com.front.dao.ParkingLotMapper.BaseResultMap"/>
+    <association property="parking" resultMap="com.front.dao.ParkingMapper.BaseResultMap"/>
+    <association property="user" resultMap="com.front.dao.UsersMapper.BaseResultMap"/>
+  </resultMap>
+
+  <update id="updateByPrimaryKey">
+    update `order`
+    set order_status = #{status}
+    where order_id = #{order_id}
+  </update>
+</mapper>

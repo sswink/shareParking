@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8"> 
+<head>
+    <title>停车场管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/select2.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/themes/flat-blue.css">
+</head>
+
+<body class="flat-blue">
+    <div class="app-container expanded">
+        <div class="row content-container">
+            <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-expand-toggle">
+                            <i class="fa fa-bars icon"></i>
+                        </button>
+                        <ol class="breadcrumb navbar-breadcrumb">
+                            <li class="active">管理员主页</li>
+                        </ol>
+                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-th icon"></i>
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown profile">
+                                <a id="tabName" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">你的用户名 <span class="caret"></span></a>
+                                <ul class="dropdown-menu animated fadeInDown">
+                                    <li class="profile-img">
+                                        <img src="/resource/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                    </li>
+                                    <li>
+                                        <div class="profile-info">
+                                            <h4 class="username" id="tabAdminName">你的用户名</h4>
+                                            <div class="btn-group margin-bottom-2x"> <!-- role="group"-->
+                                                <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> 我的</button>-->
+                                                <button type="button" class="btn btn-default" onclick="delCookie()"><i class="fa fa-sign-out"></i> 退出</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="side-menu sidebar-inverse">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="side-menu-container">
+                        <div class="navbar-header">
+                            <div class="navbar-brand">
+                                <div class="icon fa fa-paper-plane"></div>
+                                <div class="title">欢迎使用本平台</div>
+                            </div>
+                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                                <i class="fa fa-times icon"></i>
+                            </button>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="/toAdminParking">
+                                    <span class="icon fa fa-tachometer"></span><span class="title">主页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/toAdminUpdateMessage">
+                                    <span class="icon fa fa-desktop"></span><span class="title">停车场信息</span>
+                                </a>
+                            </li>
+                            <li >
+                                <a href="/toAdminParkingOrders">
+                                    <span class="icon fa fa-file-text-o"></span><span class="title">订单信息</span>
+                                </a>
+                            </li>
+                             <li >
+                                <a href="/toAdminParkingGenerates">
+                                    <span class="icon fa fa-table"></span><span class="title">车位信息</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="side-body padding-top">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                            <a href="#">
+                                <div class="card red summary-inline">
+                                    <div class="card-body">
+                                        <i class="icon fa fa-inbox fa-4x"></i>
+                                        <div class="content">
+                                            <div class="title" id="surpl">1</div>
+                                            <div class="sub-title">剩余共享车位</div>
+                                        </div>
+                                        <div class="clear-both"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                            <a href="#">
+                                <div class="card yellow summary-inline">
+                                    <div class="card-body">
+                                        <i class="icon fa fa-comments fa-4x"></i>
+                                        <div class="content">
+                                            <div class="title">23</div>
+                                            <div class="sub-title">查看今天订单</div>
+                                        </div>
+                                        <div class="clear-both"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                            <a href="#">
+                                <div class="card green summary-inline">
+                                    <div class="card-body">
+                                        <i class="icon fa fa-tags fa-4x"></i>
+                                        <div class="content">
+                                            <div class="title">5</div>
+                                            <div class="sub-title">查看全部车位</div>
+                                        </div>
+                                        <div class="clear-both"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                            <a href="#">
+                                <div class="card blue summary-inline">
+                                    <div class="card-body">
+                                        <i class="icon fa fa-share-alt fa-4x"></i>
+                                        <div class="content">
+                                            <div class="title">16</div>
+                                            <div class="sub-title">查看全部订单</div>
+                                        </div>
+                                        <div class="clear-both"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                   <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">已预约车位订单</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="display" cellspacing="0" width="100%"  id="generatingDataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>使用车辆</th>
+                                                <th>车位号</th>
+                                                <th>价格</th>
+                                                <th>创建时间</th>
+                                                <!--<th data-visible="false">状态</th>-->
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>使用车辆</th>
+                                                <th>车位号</th>
+                                                <th>价格</th>
+                                                <th>创建时间</th>
+                                                <!--<th data-visible="false">状态</th>-->
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="row">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <div class="title">停车场公告</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <textarea class="form-control" rows="18" id="pTextarea"></textarea>
+                                    <button class="btn btn-info pull-right" onclick="release()">发布</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Javascript Libs -->
+    <script type="text/javascript" src="/resource/lib/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/Chart.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/bootstrap-switch.min.js"></script>
+
+    <script type="text/javascript" src="/resource/lib/js/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/ace.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/mode-html.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/theme-github.js"></script>
+    <!-- Javascript -->
+    <script type="text/javascript" src="/resource/js/app.js"></script>
+
+    <script type="text/javascript">
+         $(document).ready( function () {
+             var table = $('#generatingDataTable').DataTable({
+                 "ajax": {
+                     "url": "order/getOrderAllDetail/-1/" + decryption(getCookie("ok"))+"/-2" ,
+                     "type": "GET",
+                     "dataSrc": 'data'   //默认为data,这里定义为空，则只需要传不带属性的数据（即前面不带data的属性）
+                 },
+                 "columns": [
+                     {"data":"orderId"},
+                     {"data":"users.plateNum"},
+                     {"data":"parkingLot.parkinglotNum"},
+                     {"data":"generate.generatePrice"},
+                     {"data":function (data) {
+                         return getLocalTime(data.orderCreatetime);
+                     }},
+                     {
+                         "data" :  function (data) {
+                             if(data.orderStatus == 0)
+                                 return "<button class='btn btn-primary' onclick='timing()'><i class='fa fa-pencil'></i>入场登记</button>" ;
+                             if(data.orderStatus == 1)
+                                 return "<button class='btn btn-danger' onclick='final()'><i class='fa fa-trash-o '></i>离开登记</button>" ;
+                         }
+                     }
+                 ]
+             });
+             $.get('/parking/getRemarkById/'+decryption(getCookie("ok")) , function (data) {
+                 $('#pTextarea').val(data.error);
+             })
+         } );
+
+         function timing() {
+             var num = 0;
+             $('#generatingDataTable tbody').on( 'click', 'tr', function () {
+                     if(num == 0){
+                         num++;
+                         var id= $(this).find('td:first').text();
+                         $.ajax({
+                             url:"/order/updateParkingBegin/" + id ,
+                             type:"get",
+                             data: {
+                                 order_id : id
+                             },
+                             success: function (data) {
+                                 if(data.success){
+                                     alert(" 入场已登记! ");
+                                     window.location.reload();
+                                 }
+                             },
+                             error: function (e) {
+                                 alert(e);
+                             }
+                         });
+                     }
+                 }
+             )
+         };
+
+         function final() {
+             var num = 0;
+             $('#generatingDataTable tbody').on( 'click', 'tr', function () {
+                     if(num == 0){
+                         num++;
+                         var id= $(this).find('td:first').text();
+                         $.ajax({
+                             url:"/order/updateParkingEnd/" + id  ,
+                             type:"get",
+                             data: {
+                                 order_id : id
+                             },
+                             success: function (data) {
+                                 if(data.success){
+                                     alert(" 离开已登记! ");
+                                     window.location.reload();
+                                 }
+                             },
+                             error: function (e) {
+                                 alert(e);
+                             }
+                         });
+                     }
+                 }
+             )
+         };
+
+         function release() {
+             var text = $('#pTextarea').val();
+             $.ajax({
+                 url:"/parking/updataRemark/" + text+ "/" + decryption(getCookie("ok"))  ,
+                 type:"get",
+                 success: function (data) {
+                     alert(" 发布成功! ");
+                 },
+                 error: function (e) {
+                     alert(e);
+                 }
+             });
+         }
+    </script>
+</body>
+</html>

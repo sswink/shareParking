@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+    <title>订单管理界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/select2.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/themes/flat-blue.css">
+</head>
+
+<body class="flat-blue">
+<div class="app-container expanded">
+    <div class="row content-container">
+        <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-expand-toggle">
+                        <i class="fa fa-bars icon"></i>
+                    </button>
+                    <ol class="breadcrumb navbar-breadcrumb">
+                        <li class="active">查看订单</li>
+                    </ol>
+                    <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                        <i class="fa fa-th icon"></i>
+                    </button>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown profile">
+                            <a id="tabName" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">你的用户名 <span class="caret"></span></a>
+                            <ul class="dropdown-menu animated fadeInDown">
+                                <li class="profile-img">
+                                    <img src="/resource/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                </li>
+                                <li>
+                                    <div class="profile-info">
+                                        <h4 class="username" id="tabAdminName">你的用户名</h4>
+                                        <div class="btn-group margin-bottom-2x"> <!-- role="group"-->
+                                            <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> 我的</button>-->
+                                            <button type="button" class="btn btn-default" onclick="delCookie()"><i class="fa fa-sign-out"></i> 退出</button>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="side-menu sidebar-inverse">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="side-menu-container">
+                    <div class="navbar-header">
+                        <div class="navbar-brand">
+                            <div class="icon fa fa-paper-plane"></div>
+                            <div class="title">欢迎使用本平台</div>
+                        </div>
+                        <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-times icon"></i>
+                        </button>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="/toIndex">
+                                <span class="icon fa fa-tachometer"></span><span class="title">主页</span>
+                            </a>
+                        </li>
+
+
+                        <li class="panel panel-default dropdown " >
+                            <a data-toggle="collapse" href="#dropdown-user">
+                                <span class="icon fa fa-desktop"></span><span class="title">用户管理</span>
+                            </a>
+                            <!-- Dropdown level 1 -->
+                            <div id="dropdown-user" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="/toUser">普通用户管理</a>
+                                        </li>
+                                        <li><a href="/toParkmanager">停车场管理员管理</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="panel panel-default dropdown active">
+                            <a data-toggle="collapse" href="#dropdown-order">
+                                <span class="icon fa fa-file-text-o"></span><span class="title">订单管理</span>
+                            </a>
+                            <!-- Dropdown level 1 -->
+                            <div id="dropdown-order" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="nav navbar-nav">
+                                        <li><a href="/toOrders">已完成订单</a>
+                                        </li>
+                                        <li><a href="/toGenerate">可共享车位</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="li-newparking">
+                            <a href="/toNewParking">
+                                <span class="icon fa fa-archive"></span><span class="title">新增停车场</span>
+                            </a>
+                        </li>
+                        <li id="li-parkinglot">
+                            <a href="/toParkinglot">
+                                <span class="icon fa fa-table"></span><span class="title">查看车位</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/toLicense">
+                                <span class="icon fa fa-thumbs-o-up"></span><span class="title">关于</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+        </div>
+        <!-- Main Content -->
+        <div class="container-fluid">
+            <div class="side-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="display" cellspacing="0" width="100%"  id="orderDataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>停车者车牌号</th>
+                                        <th>停车场名称</th>
+                                        <th>车位号</th>
+                                        <th>停车总时长</th>
+                                        <th>价格</th>
+                                        <th>状态</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>停车者车牌号</th>
+                                        <th>停车场名称</th>
+                                        <th>车位号</th>
+                                        <th>停车总时长</th>
+                                        <th>价格</th>
+                                        <th>状态</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- Javascript Libs -->
+<script type="text/javascript" src="/resource/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/Chart.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/bootstrap-switch.min.js"></script>
+
+<script type="text/javascript" src="/resource/lib/js/jquery.matchHeight-min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/select2.full.min.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/ace.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/mode-html.js"></script>
+<script type="text/javascript" src="/resource/lib/js/ace/theme-github.js"></script>
+<!-- Javascript -->
+<script type="text/javascript" src="/resource/js/app.js"></script>
+
+
+<script type="text/javascript">
+    var num=0;
+    $(document).ready( function () {
+        var table = $('#orderDataTable').DataTable({
+            "ajax": {
+                "url": "/order/getOrderAllDetail/-1/-1/-1",
+                "type": "GET",
+                "dataSrc": 'data'   //默认为data,这里定义为空，则只需要传不带属性的数据（即前面不带data的属性）
+            },
+            "columns": [
+                {
+                    "class": "details-control",
+                    "orderable": false,
+                    "data" :  "orderId" ,
+                    "defaultContent": ""
+                },
+                {"data":"users.plateNum"},
+                {"data":"parking.parkingName"},
+                {"data":"parkingLot.parkinglotNum"},
+                {"data":"orderParkingTotaltime"},
+                {"data":"orderPrice"},
+                {"data" :  function (data) {
+                    if(data.orderStatus == 0)
+                        return "<button class='btn btn-info btn-xs'>待确定</button>" ;
+                    if(data.orderStatus == 1)
+                        return "<button class='btn btn-warning btn-xs'>已入场</button>" ;
+                    if(data.orderStatus == 2)
+                        return "<button class='btn btn-danger btn-xs' >已完成</button>" ;
+                    }
+                }
+            ],
+            // 点击表中数据即可搜索
+            "initComplete": function () {
+                var api = this.api();
+                api.$('td:not(td:first,td:last)').click( function () {
+                    if(num==0){
+                        num++;
+                        api.search( this.innerHTML ).draw();
+                    }
+                    else{
+                        num--;
+                        api.search("").draw();
+                    }
+                });
+            },
+            // 表格的数据显示范围（生成滚动条）
+            "scrollY": $(window).height()> $(document).height() ? $(window).height()*0.5 : $(document).height()*0.5,
+            "scrollX": $(window).width(),
+            // 延迟加载
+            "deferRender": true
+        });
+        // 为打开和关闭详情添加事件监听器
+        $('#orderDataTable tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
+    } );
+
+    // 添加下表单效果
+    function format ( d ) {
+        // `d` is the original data object for the row
+        return '<table class="panel panel-info " style="margin: auto;width: 70%;" '+
+            '<tr>'+
+            '<td><b>停车者姓名：</b></td>'+
+            '<td>'+d.users.userName+'</td>'+
+            '<td><b>订单号：</b></td>'+
+            '<td>'+d.orderId+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>停车者联系方式：</b></td>'+
+            '<td>'+d.users.phoneNum+'</td>'+
+            '<td><b>开始停车时间：</b></td>'+
+            '<td>'+getLocalTime(d.orderParkingBegin)+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>停车者车牌号：</b></td>'+
+            '<td>'+d.users.plateNum+'</td>'+
+            '<td><b>结束停车时间：</b></td>'+
+            '<td>'+getLocalTime(d.orderParkingEnd)+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>停车场名称：</b></td>'+
+            '<td>'+d.parking.parkingName+'</td>'+
+            '<td><b>车位收费/时：</b></td>'+
+            '<td>'+d.generate.generatePrice+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>停车场地址：</b></td>'+
+            '<td>'+d.parking.parkingLocation+'</td>'+
+            '<td><b>共缴费：</b></td>'+
+            '<td>'+d.orderPrice+'</td>'+
+            '</tr>'+
+            '<tr>'+
+            '<td><b>停车场公告：</b></td>'+
+            '<td>'+d.parking.remaker+'</td>'+
+            '<td></td>'+
+            '<td></td>'+
+            '</tr>'+
+            '</table>';
+    }
+</script>
+</html>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.front.dao.GenerateMapper" >
+  <resultMap id="BaseResultMap" type="com.front.entity.Generate" >
+
+      <id column="generate_id" jdbcType="BIGINT" property="generateId" />
+      <result column="parkinglot_id" jdbcType="BIGINT" property="parkinglotId" />
+      <result column="generate_share_begin" jdbcType="BIGINT" property="generateShareBegin"  />
+      <result column="generate_share_end" jdbcType="BIGINT" property="generateShareEnd" />
+      <result column="generate_price" jdbcType="DECIMAL" property="generatePrice" />
+      <result column="generate_status" jdbcType="CHAR" property="generateStatus" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    generate_id, parkinglot_id, generate_share_begin, generate_share_end, generate_price, 
+    generate_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from generate
+    where generate_id = #{generateId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from generate
+    where generate_id = #{generateId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.front.entity.Generate" >
+    insert into generate (generate_id, parkinglot_id, generate_share_begin, 
+      generate_share_end, generate_price, generate_status
+      )
+    values (#{generateId,jdbcType=BIGINT}, #{parkinglotId,jdbcType=BIGINT}, #{generateShareBegin,jdbcType=BIGINT},
+      #{generateShareEnd,jdbcType=BIGINT}, #{generatePrice,jdbcType=DECIMAL}, #{generateStatus,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.front.entity.Generate" >
+    insert into generate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="generateId != null" >
+        generate_id,
+      </if>
+      <if test="parkinglotId != null" >
+        parkinglot_id,
+      </if>
+      <if test="generateShareBegin != null" >
+        generate_share_begin,
+      </if>
+      <if test="generateShareEnd != null" >
+        generate_share_end,
+      </if>
+      <if test="generatePrice != null" >
+        generate_price,
+      </if>
+      <if test="generateStatus != null" >
+        generate_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="generateId != null" >
+        #{generateId,jdbcType=BIGINT},
+      </if>
+      <if test="parkinglotId != null" >
+        #{parkinglotId,jdbcType=BIGINT},
+      </if>
+      <if test="generateShareBegin != null" >
+        #{generateShareBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generateShareEnd != null" >
+        #{generateShareEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="generatePrice != null" >
+        #{generatePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="generateStatus != null" >
+        #{generateStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.front.entity.Generate" >
+    update generate
+    <set >
+      <if test="parkinglotId != null" >
+        parkinglot_id = #{parkinglotId,jdbcType=BIGINT},
+      </if>
+      <if test="generateShareBegin != null" >
+        generate_share_begin = #{generateShareBegin,jdbcType=BIGINT},
+      </if>
+      <if test="generateShareEnd != null" >
+        generate_share_end = #{generateShareEnd,jdbcType=BIGINT},
+      </if>
+      <if test="generatePrice != null" >
+        generate_price = #{generatePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="generateStatus != null" >
+        generate_status = #{generateStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where generate_id = #{generateId,jdbcType=BIGINT}
+  </update>
+
+
+  <resultMap id="GenerateAllDetail" type="com.front.dto.GenerateAllDetail">
+    <id column="generate_id" jdbcType="BIGINT" property="generateId"/>
+    <result column="parkinglot_id" jdbcType="BIGINT" property="parkinglotId"/>
+    <result column="generate_share_begin" jdbcType="BIGINT" property="generateShareBegin"/>
+    <result column="generate_share_end" jdbcType="BIGINT" property="generateShareEnd"/>
+    <result column="generate_price" jdbcType="DECIMAL" property="generatePrice"/>
+    <result column="generate_status" jdbcType="CHAR" property="generateStatus"/>
+    <association property="parkingLot" resultMap="com.front.dao.ParkingLotMapper.BaseResultMap"/>
+    <association property="users" resultMap="com.front.dao.UsersMapper.BaseResultMap"/>
+    <association property="parking" resultMap="com.front.dao.ParkingMapper.BaseResultMap"/>
+  </resultMap>
+
+  <select id="getGenerateAllDetail" resultMap="GenerateAllDetail">
+    SELECT *
+    FROM generate g
+    JOIN parkinglot pl on pl.parkinglot_id = g.parkinglot_id
+    JOIN users u on u.user_id = pl.user_id
+    JOIN parking pk on pk.parking_id = pl.parking_id
+    <where>
+      <if test="parkingId != -1" >
+        pk.parking_id=#{parkingId}
+      </if>
+      <if test="generateStatus != -1" >
+        AND g.generate_status=#{generateStatus}
+      </if>
+    </where>
+  </select>
+
+  <update id="setStatusByOrderEnd">
+    update generate
+    set
+    generate_status = 1
+    WHERE generate_id=#{generateId}
+  </update>
+
+  <!--前端-->
+  <select id="queryById" resultMap="parkingShare">
+    SELECT p.parking_name,u.plate_num,g.generate_share_begin,
+    g.generate_share_end, g.generate_status,g.generate_id,
+    g.generate_price
+    FROM generate g JOIN parkinglot pl
+    ON pl.parkinglot_id=g.parkinglot_id JOIN parking p
+    ON p.parking_id=pl.parking_id JOIN users u
+    ON u.user_id=pl.user_id
+    WHERE  u.user_id=#{user_id}
+  </select>
+
+  <select id="generateProfit" resultMap="parkingShareInfo">
+    SELECT   g.generate_id,o.order_id,p.parking_name,o.order_parking_begin,
+    o.order_parking_end,g.generate_share_begin,g.generate_share_end,g.generate_price a,
+    o.order_price b,g.generate_status
+    FROM generate g LEFT JOIN parkinglot pl
+    ON pl.parkinglot_id=g.parkinglot_id LEFT JOIN parking p
+    ON p.parking_id=pl.parking_id LEFT JOIN users u
+    ON u.user_id=pl.user_id  LEFT JOIN sharepl.order o
+    ON o.generate_id=g.generate_id
+    <where>g.generate_id=#{generate_id}</where>
+  </select>
+
+  <!--修改generate状态-->
+  <update id="updateByPrimaryKey">
+    update generate
+    set  generate_status = #{status}
+    where generate_id = #{generate_id}
+  </update>
+  <insert id="insertGenerate">
+    INSERT INTO generate
+    (parkinglot_id,generate_share_begin,generate_share_end,
+    generate_price,generate_status)
+    VALUES
+    (#{parkinglot_id},
+    #{share_begin},
+    #{share_end},
+    #{price},
+    #{status}
+    );
+  </insert>
+  <resultMap id="parkingShare" type="com.front.dto.MyShareList">
+    <id column="generate_id" jdbcType="BIGINT" property="generateId"/>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="plate_num" jdbcType="VARCHAR" property="plateNum"/>
+    <result column="parkinglot_id" jdbcType="BIGINT" property="parkinglotId"/>
+    <result column="generate_share_begin" jdbcType="BIGINT" property="generateShareBegin"/>
+    <result column="generate_share_end" jdbcType="BIGINT" property="generateShareEnd"/>
+    <result column="generate_price" jdbcType="DECIMAL" property="generatePrice"/>
+    <result column="generate_status" jdbcType="CHAR" property="generateStatus"/>
+  </resultMap>
+  <resultMap id="parkingShareInfo" type="com.front.dto.ShareProfit">
+    <id column="generate_id" jdbcType="BIGINT" property="generateId"/>
+    <result column="parking_name" jdbcType="VARCHAR" property="parkingName"/>
+    <result column="generate_share_begin" jdbcType="BIGINT" property="beginShareTime"/>
+    <result column="generate_share_end" jdbcType="BIGINT" property="endShareTime"/>
+    <result column="a" jdbcType="DECIMAL" property="price"/>
+    <result column="generate_status" jdbcType="VARCHAR" property="status"/>
+    <collection property="contendsList"  resultMap="sharecontend"/>
+  </resultMap>
+  <resultMap id="sharecontend" type="com.front.dto.sharecontends">
+    <id column="order_id" jdbcType="BIGINT" property="orderId"/>
+    <result column="order_parking_begin" jdbcType="VARCHAR" property="parkingBeginTime"/>
+    <result column="order_parking_end" jdbcType="VARCHAR" property="parkingEndTime"/>
+    <result column="b" jdbcType="DECIMAL" property="allPrice"/>
+  </resultMap>
+</mapper>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8"> 
+<head>
+    <title>共享车位管理界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+    <!-- CSS Libs -->
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/resource/lib/css/select2.min.css">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" href="/resource/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/themes/flat-blue.css">
+</head>
+
+<body class="flat-blue">
+    <div class="app-container expanded">
+        <div class="row content-container">
+            <nav class="navbar navbar-default navbar-fixed-top navbar-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-expand-toggle">
+                            <i class="fa fa-bars icon"></i>
+                        </button>
+                        <ol class="breadcrumb navbar-breadcrumb">
+                            <li class="active">查看共享车位</li>
+                        </ol>
+                        <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
+                            <i class="fa fa-th icon"></i>
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown profile">
+                                <a id="tabName" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">你的用户名 <span class="caret"></span></a>
+                                <ul class="dropdown-menu animated fadeInDown">
+                                    <li class="profile-img">
+                                        <img src="/resource/img/profile/picjumbo.com_HNCK4153_resize.jpg" class="profile-img">
+                                    </li>
+                                    <li>
+                                        <div class="profile-info">
+                                            <h4 class="username" id="tabAdminName">你的用户名</h4>
+                                            <div class="btn-group margin-bottom-2x"> <!-- role="group"-->
+                                                <!--<button type="button" class="btn btn-default"><i class="fa fa-user"></i> 我的</button>-->
+                                                <button type="button" class="btn btn-default" onclick="delCookie()"><i class="fa fa-sign-out"></i> 退出</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="side-menu sidebar-inverse">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="side-menu-container">
+                        <div class="navbar-header">
+                            <div class="navbar-brand">
+                                <div class="icon fa fa-paper-plane"></div>
+                                <div class="title">欢迎使用本平台</div>
+                            </div>
+                            <button type="button" class="navbar-expand-toggle pull-right visible-xs">
+                                <i class="fa fa-times icon"></i>
+                            </button>
+                        </div>
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/toAdminParking">
+                                    <span class="icon fa fa-tachometer"></span><span class="title">主页</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a >
+                                    <span class="icon fa fa-desktop"></span><span class="title">停车场信息</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/toAdminUpdateMessage">
+                                    <span class="icon fa fa-desktop"></span><span class="title">停车场信息</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                            <a href="/toAdminParkingGenerates">
+                                    <span class="icon fa fa-table"></span><span class="title">车位信息</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="side-body padding-top">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <button id="quanbu" class="card red summary-inline col-lg-3" style="height: 35px;">查看全部共享车位</button>
+                                        <button id="kegongxiang" class="card yellow summary-inline col-lg-3" style="height: 35px;">等待共享的车位</button>
+                                        <button id="gongxiangzhong" class="card green summary-inline col-lg-3" style="height: 35px;">查共享中的车位</button>
+                                        <button id="yiwancheng" class="card blue summary-inline col-lg-3" style="height: 35px;">查看已完成共享的车位</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="display" cellspacing="0" width="100%"  id="adminGenerate">
+                                            <thead>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>车位主人姓名</th>
+                                                <th>车位主人手机号</th>
+                                                <th>车位号</th>
+                                                <th>开始共享时间</th>
+                                                <th>结束共享时间</th>
+                                                <th>收费</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th>订单号</th>
+                                                <th>车位主人姓名</th>
+                                                <th>车位主人手机号</th>
+                                                <th>车位号</th>
+                                                <th>开始共享时间</th>
+                                                <th>结束共享时间</th>
+                                                <th>收费</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Javascript Libs -->
+    <script type="text/javascript" src="/resource/lib/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/Chart.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/bootstrap-switch.min.js"></script>
+
+    <script type="text/javascript" src="/resource/lib/js/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/ace.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/mode-html.js"></script>
+    <script type="text/javascript" src="/resource/lib/js/ace/theme-github.js"></script>
+    <!-- Javascript -->
+    <script type="text/javascript" src="/resource/js/app.js"></script>
+
+    <script type="text/javascript">
+         $(document).ready( function () {
+             var table = $('#adminGenerate').dataTable({
+                 "ajax": {
+                     "url": "/generate/getGenerateAllDetail/"+decryption(getCookie("ok")) +"/-1",
+                     "type": "GET",
+                     "dataSrc": 'data'   //默认为data,这里定义为空，则只需要传不带属性的数据（即前面不带data的属性）
+                 },
+                 "columns": [
+                     {"data":"generateId"},
+                     {"data":"users.userName"},
+                     {"data":"users.phoneNum"},
+                     {"data":"parkingLot.parkinglotNum"},
+                     {"data":function (data) {
+                         return getLocalTime(data.generateShareBegin);
+                     }},
+                     {"data":function (data) {
+                         return getLocalTime(data.generateShareEnd);
+                     }},
+                     {"data":"generatePrice"}
+                 ],
+                 // 表格的数据显示范围（生成滚动条）
+                 "scrollY": $(window).height()> $(document).height() ? $(window).height()*0.45 : $(document).height()*0.45,
+                 "scrollX": $(window).width(),
+                 // 延迟加载
+                 "deferRender": true
+             });
+
+             // 点击按钮更新表格
+             $("#quanbu").click(function() {
+                 var url = table.api().ajax.url("/generate/getGenerateAllDetail/"+decryption(getCookie("ok")) +"/-1");
+                 url.load();
+             });
+             $("#kegongxiang").click(function() {
+                 var url = table.api().ajax.url("/generate/getGenerateAllDetail/"+decryption(getCookie("ok")) +"/0");
+                 url.load();
+             });
+             $("#gongxiangzhong").click(function() {
+                 var url = table.api().ajax.url("/generate/getGenerateAllDetail/"+decryption(getCookie("ok")) +"/1");
+                 url.load();
+             });
+             $("#yiwancheng").click(function() {
+                 var url = table.api().ajax.url("/generate/getGenerateAllDetail/"+decryption(getCookie("ok")) +"/2");
+                 url.load();
+             });
+         } );
+
+    </script>
+    </body>
+
+</html>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.front.dao.UsersMapper" >
+  <resultMap id="BaseResultMap" type="com.front.entity.Users" >
+    <constructor >
+      <idArg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="wx_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="wx_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sex" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="phone_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="plate_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="regist_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="lastlogin_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, wx_id, wx_name, user_name, sex, phone_num, plate_num, regist_time, lastlogin_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from users
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from users
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.front.entity.Users" >
+    insert into users (user_id, wx_id, wx_name, 
+      user_name, sex, phone_num, 
+      plate_num, regist_time, lastlogin_time
+      )
+    values (#{userId,jdbcType=BIGINT}, #{wxId,jdbcType=VARCHAR}, #{wxName,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{phoneNum,jdbcType=VARCHAR}, 
+      #{plateNum,jdbcType=VARCHAR}, #{registTime,jdbcType=TIMESTAMP}, #{lastloginTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.front.entity.Users" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="wxId != null" >
+        wx_id,
+      </if>
+      <if test="wxName != null" >
+        wx_name,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phoneNum != null" >
+        phone_num,
+      </if>
+      <if test="plateNum != null" >
+        plate_num,
+      </if>
+      <if test="registTime != null" >
+        regist_time,
+      </if>
+      <if test="lastloginTime != null" >
+        lastlogin_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="wxId != null" >
+        #{wxId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNum != null" >
+        #{plateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginTime != null" >
+        #{lastloginTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.front.entity.Users" >
+    update users
+    <set >
+      <if test="wxId != null" >
+        wx_id = #{wxId,jdbcType=VARCHAR},
+      </if>
+      <if test="wxName != null" >
+        wx_name = #{wxName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="phoneNum != null" >
+        phone_num = #{phoneNum,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNum != null" >
+        plate_num = #{plateNum,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null" >
+        regist_time = #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastloginTime != null" >
+        lastlogin_time = #{lastloginTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.front.entity.Users" >
+    update users
+    set wx_id = #{wxId,jdbcType=VARCHAR},
+      wx_name = #{wxName,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=CHAR},
+      phone_num = #{phoneNum,jdbcType=VARCHAR},
+      plate_num = #{plateNum,jdbcType=VARCHAR},
+      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      lastlogin_time = #{lastloginTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAllUser" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM users
+   </select>
+
+
+  <select id="queryBywxOpenId" resultMap="BaseResultMap">
+    SELECT 	user_id,wx_id,wx_name,user_name,sex,phone_num,plate_num,regist_time,lastlogin_time
+    FROM users
+    <where>wx_id=#{wxopen_id}</where>
+  </select>
+  <update id="update">
+    UPDATE users set lastlogin_time=#{lastlogin_time} <where>wx_id=#{wxopen_id}</where>
+  </update>
+  <insert id="insertUser">
+    INSERT INTO users(wx_id,wx_name,user_name,sex,phone_num,
+    plate_num,lastlogin_time)
+    VALUES(#{wxopen_id},#{wx_name},#{user_name},#{sex},#{phone_num},#{plate_num},#{lastlogin_time}
+    )
+  </insert>
+</mapper>

@@ -1,0 +1,5 @@
+com/front/dao/GenerateMapperTest.class
+com/front/dao/ParkingLotMapperTest.class
+com/front/dao/ParkingMapperTest.class
+com/front/Service/GenerateServiceTest.class
+com/front/Service/ParkingServiceTest.class
